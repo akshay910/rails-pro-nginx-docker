@@ -1,0 +1,10 @@
+FROM nginx:latest
+
+#RUN  rm  /etc/nignx/conf.d/default.conf
+RUN sudo yum install -y pygpgme curl
+RUN sudo curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+RUN sudo yum install -y nginx passenger || sudo yum-config-manager --enable cr && sudo yum install -y nginx passenger
+
+RUN vi /etc/nginx/conf.d/passenger.conf
+
+COPY nginx.conf /etc/nginx/conf.d/

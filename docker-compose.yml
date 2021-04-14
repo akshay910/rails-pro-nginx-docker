@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+    web:
+        build: ./sample_app_4th_ed
+        container_name: rail_app
+        restart: always
+        volumes:
+            - ./sample_app_4th_ed:/app
+            - bundle-volume:/usr/local/bundle
+        ports:
+            - "3000:3000"
+        depends_on:
+            - db
+        environment:
+           #  APP_ENV: local
+             APP_URL: "http://localhost"
+        #expose:
+         #   - 8080
+
+    db:
+        image: postgres:12
+        volumes:
+            - db-volume:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: password1234        
+
+
+
+
+    nginx:
+        build: ./nginx
+        container_name: niginx
+        restart: always
+        depends_on:
+           - web
+        ports:
+           -  "80:80"
+           -  "443:443" 
+volumes:
+    bundle-volume:
+    db-volume:    
+
